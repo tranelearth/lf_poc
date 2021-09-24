@@ -18,7 +18,7 @@ class AddLfDataToUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->after('name', function ($table) {
                 $table->string('username')->nullable();
-                $table->string('first_name')->nullable();
+                /*$table->string('first_name')->nullable();
                 $table->string('last_name')->nullable();
                 $table->string('company')->nullable();
                 $table->string('address1')->nullable();
@@ -26,16 +26,16 @@ class AddLfDataToUserTable extends Migration
                 $table->string('city')->nullable();
                 $table->string('state', 2)->nullable();
                 $table->string('zip', 10)->nullable();
-                $table->string('phone', 12)->nullable();
+                $table->string('phone', 12)->nullable();*/
                 $table->bigInteger('saas_user_id')->nullable();
                 $table->bigInteger('carrier_id')->nullable();
             });
             $table->after('password', function ($table) {
-                $table->boolean('accepted_terms')->nullable();
-                $table->boolean('is_banned')->nullable();
-                $table->date('banned_date')->nullable();
                 $table->ipAddress('ip_address')->nullable();
-                $table->string('timezone')->nullable();
+                $table->boolean('accepted_terms')->nullable();
+                /*$table->boolean('is_banned')->nullable();
+                $table->date('banned_date')->nullable();
+                $table->string('timezone')->nullable();*/
             });
             $table->softDeletesTz($column = 'deleted_at', $precision = 0);
             $table->foreign('saas_user_id')->references('id')->on('liq_saas_user');
