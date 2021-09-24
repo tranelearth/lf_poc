@@ -27,6 +27,8 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'carrier_id',
+        'saas_user_id',
         'password',
     ];
 

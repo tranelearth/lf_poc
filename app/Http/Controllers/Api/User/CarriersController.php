@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Http\Controllers\Broker;
+namespace App\Http\Controllers\Api\User;
   
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -15,21 +15,35 @@ use Illuminate\Validation\Rule;
 
 use Laravel\Jetstream\Jetstream;
   
-class MyCarriersController extends \App\Http\Controllers\Controller
+class CarriersController extends \App\Http\Controllers\Controller
 {
-    public function index(): \Inertia\Response
+    public function index(): \Illuminate\Http\JsonResponse
     {
-
-        $broker = Broker::find(Auth::user()->saas_user_id);
-        $broker->load('carriers');
-
-        return Inertia::render('Broker/MyCarriers/Index', [
-            'filters' => Request::all('search', 'trashed'),
-            'broker' => $broker,
-            'error' => null,
+//find broker id from user
+        $carriers = Carrier::all();
+//var_dump($broker); die;
+        return response()->json([
+            //'filters' => Request::all('search'),
+            'data' => $carriers,
+/*                ->with(['player.user', 'college'])
+                ->orderBy('contact_date', 'desc')
+                ->filter(Request::only('search'))
+                ->paginate(10)
+                ->through(function ($log) {
+                    return [
+                        'id' => $log->id,
+                        'contact_date' => $log->contact_date,
+                        'initiated_by' => $log->initiated_by,
+                        'subject' => $log->subject,
+                        'notes' => $log->notes,
+                        'player' => $log->player,
+                        'college' => $log->college,
+                        'college_coach' => $log->college_coach,
+                    ];
+                }) */
         ]);
-    }
-  
+}
+  /*
     public function create(Broker $broker): \Inertia\Response
     {
         $team = Auth::user()->currentTeam;
@@ -57,7 +71,7 @@ class MyCarriersController extends \App\Http\Controllers\Controller
         $redirect = session('prevUrl') ? Redirect::to(session('prevUrl')) : Redirect::route('MyCarriers.index');
         return $redirect->with('message', 'Carrier Added Successfully.');
     }
-
+*/
 /*    public function edit(Carrier $carrier, Broker $broker): \Inertia\Response
     {
         if(!Auth::user()->hasTeamPermission('myCarriers.update')){
@@ -81,7 +95,7 @@ class MyCarriersController extends \App\Http\Controllers\Controller
         return $redirect->with('message', 'Broker Updated Successfully.');
     }
 */  
-    public function remove(Carrier $carrier, Broker $broker): ?\Illuminate\Http\RedirectResponse
+ /*   public function remove(Carrier $carrier, Broker $broker): ?\Illuminate\Http\RedirectResponse
     {
         $team = Auth::user()->currentTeam;
         if(!Auth::user()->hasTeamPermission($team, 'myCarriers.removeOthers')){
@@ -101,6 +115,7 @@ class MyCarriersController extends \App\Http\Controllers\Controller
             'notes' => ['nullable'],
         ];
     }
+    */
 /*
     private function hasCarrierPermission(Carrier $carrier, String $permission) {
         $team = Auth::user()->currentTeam;

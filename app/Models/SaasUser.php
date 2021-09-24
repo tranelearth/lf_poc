@@ -6,32 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Carrier extends Model
+class SaasUser extends Model
 {
     use HasFactory;//, SoftDeletes;
 
-    protected $table = 'liq_master_file_carrierprofile';
+    protected $table = 'liq_saas_user';
 
-    protected $fillable = ['saas_user_id','masterUserId','carrierCode','carrierName','dateCreated','yearsInBusiness','scacCode','dotNumber',
-        'mcNumber','canadianAuthority','canadianCarrierNumber','mexicanAuthority','numberOfTrucks','numberOfTanks','tanksWithPumps',
-        'tanksWithHeat','tanksWithDairyValves','tanksWithFoodGradeValves','regions','streetAddress1','streetAddress2','city','state','zip',
-        'latitude','longitude','phone','fax','sentToSyncarto'
-    ];
+    protected $fillable = ['name','active'];
 
     /*public function positions() {
         return $this->belongsToMany(Position::class);
     }*/
 
-    public function brokers() {
-        return $this->belongsToMany(Broker\Broker::class, 'liq_master_file_carriers', 'carrierProfileId', 'saas_user_id')->withPivot('kosher','kosherExpiration','email','autoInsuranceExpiration',
-            'autoInsuranceLimit','cargoInsuranceExpiration','cargoInsuranceLimit','generalLiabilityInsuranceExpiration',
-            'generalLiabilityInsuranceLimit','workCompInsuranceExpiration','workCompInsuranceLimit','note','riskAlerts','contractOnFile',
-            'w9OnFile','insuranceOnFile','goodStanding','carrierServiceRating','carrierSafetyRating','accountingId','sentToSyncarto'
-        );
-    }
-
-    public function getLabelAttribute() {
-        return $this->attributes('carrierName');
+    public function saas_user_types() {
+        return $this->belongsToMany(SaasUserType::class, 'liq_saas_users__saas_types', 'saas_user_id', 'saas_user_type_id');
     }
 
     /*public function activity_logs() {

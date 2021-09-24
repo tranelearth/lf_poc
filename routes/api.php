@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('user/carriers', '\App\Http\Controllers\Api\User\CarriersController@index');
+/*Route::get('students/{id}', 'ApiController@getStudent');
+Route::post('students, 'ApiController@createStudent');
+Route::put('students/{id}', 'ApiController@updateStudent');
+Route::delete('students/{id}','ApiController@deleteStudent');
+*/

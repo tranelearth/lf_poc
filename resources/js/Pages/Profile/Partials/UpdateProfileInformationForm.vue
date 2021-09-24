@@ -59,6 +59,12 @@
                 <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
                 <jet-input-error :message="form.errors.email" class="mt-2" />
             </div>
+
+            <div class="col-span-6 sm:col-span-4">
+                <jet-label for="carrier_id" value="Carrier" />
+                <forms-select-lazy-options label="Carrier" id="carrier_id" displayField="carrierName" lookup_url="/api/user/carriers/" @input="onSelectedCarrier" :error="form.errors.carrier_id" placeholder="Select your carrier" />
+                <jet-input-error :message="form.errors.carrier_id" class="mt-2" />
+            </div>
         </template>
 
         <template #actions>
@@ -82,6 +88,7 @@
     import JetLabel from '@/Jetstream/Label.vue'
     import JetActionMessage from '@/Jetstream/ActionMessage.vue'
     import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue'
+    import FormsSelectLazyOptions from '@/Shared/Forms/FormsSelectLazyOptions.vue'
 
     export default defineComponent({
         components: {
@@ -92,6 +99,7 @@
             JetInputError,
             JetLabel,
             JetSecondaryButton,
+            FormsSelectLazyOptions,
         },
 
         props: ['user'],
@@ -103,6 +111,8 @@
                     first_name: this.user.first_name,
                     last_name: this.user.last_name,
                     email: this.user.email,
+                    carrier_id: this.user.carrier_id,
+                    saas_user_id: this.user.saas_user_id,
                     photo: null,
                 }),
 
@@ -111,6 +121,10 @@
         },
 
         methods: {
+            onSelectedCarrier() {
+                console.log('carrier set');
+            },
+
             updateProfileInformation() {
                 if (this.$refs.photo) {
                     this.form.photo = this.$refs.photo.files[0]

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Http\Controllers\Broker;
+namespace App\Http\Controllers\Api\User;
   
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -9,20 +9,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
 use App\Models\Broker\Broker;
-use App\Models\Carrier;
+use App\Models\SaasUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 use Laravel\Jetstream\Jetstream;
   
-class MyCarriersController extends \App\Http\Controllers\Controller
+class SaasUserController extends \App\Http\Controllers\Controller
 {
     public function index(): \Inertia\Response
     {
 
-        $broker = Broker::find(Auth::user()->saas_user_id);
+        $broker = SaasUser::all()->with();
         $broker->load('carriers');
-
+//var_dump($broker); die;
         return Inertia::render('Broker/MyCarriers/Index', [
             'filters' => Request::all('search', 'trashed'),
             'broker' => $broker,
@@ -81,7 +81,7 @@ class MyCarriersController extends \App\Http\Controllers\Controller
         return $redirect->with('message', 'Broker Updated Successfully.');
     }
 */  
-    public function remove(Carrier $carrier, Broker $broker): ?\Illuminate\Http\RedirectResponse
+/*    public function remove(Carrier $carrier, Broker $broker): ?\Illuminate\Http\RedirectResponse
     {
         $team = Auth::user()->currentTeam;
         if(!Auth::user()->hasTeamPermission($team, 'myCarriers.removeOthers')){
@@ -100,7 +100,7 @@ class MyCarriersController extends \App\Http\Controllers\Controller
             'carrier_id' => ['required', 'integer'],
             'notes' => ['nullable'],
         ];
-    }
+    }*/
 /*
     private function hasCarrierPermission(Carrier $carrier, String $permission) {
         $team = Auth::user()->currentTeam;
