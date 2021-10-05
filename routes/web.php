@@ -15,6 +15,7 @@ use Inertia\Inertia;
 |
 */
 
+// Route for guests
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -24,21 +25,23 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+// Route for oAuth Authentication
+Route::get('apiloginform', [\App\Http\Controllers\Auth\ApiAuthController::class, 'apiloginform'])->name('oAuth.login-form'); 
 
-//Route::group(['middleware' => 'auth'], function() {
-    //Route::group(['middleware' => 'role:student', 'prefix' => 'student', 'as' => 'student.'], function() {
-        Route::resource('/Broker/myCarriers', \App\Http\Controllers\Broker\MyCarriersController::class);
-    //});
-//});
+// SPA Routes
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::resource('/Broker/myCarriers', \App\Http\Controllers\Broker\MyCarriersController::class);
 
 /*
-Route::get('/Broker/myCarriers/{broker}', [\App\Http\Controllers\Broker\MyCarriersController::class, 'index'])->name('myCarriers.index');
-//Route::get('/Broker/myCarriers/{broker}/create', [\App\Http\Controllers\Broker\MyCarriersController::class, 'create'])->name('myCarriers.create');
-//Route::get('/Broker/myCarriers/{player}/{broker}/edit', [\App\Http\Controllers\Broker\MyCarriersController::class, 'edit'])->name('myCarriers.edit');
-//Route::post('/Broker/myCarriers', [\App\Http\Controllers\Broker\MyCarriersController::class, 'store'])->name('myCarriers.store');
-//Route::put('/Broker/myCarriers/{broker}', [\App\Http\Controllers\Broker\MyCarriersController::class, 'update'])->name('myCarriers.update');
-Route::delete('/Broker/myCarriers/{player}/{broker}', [\App\Http\Controllers\Broker\MyCarriersController::class, 'remove'])->name('myCarriers.remove');
-*/
+    Route::get('/Broker/myCarriers/{broker}', [\App\Http\Controllers\Broker\MyCarriersController::class, 'index'])->name('myCarriers.index');
+    //Route::get('/Broker/myCarriers/{broker}/create', [\App\Http\Controllers\Broker\MyCarriersController::class, 'create'])->name('myCarriers.create');
+    //Route::get('/Broker/myCarriers/{player}/{broker}/edit', [\App\Http\Controllers\Broker\MyCarriersController::class, 'edit'])->name('myCarriers.edit');
+    //Route::post('/Broker/myCarriers', [\App\Http\Controllers\Broker\MyCarriersController::class, 'store'])->name('myCarriers.store');
+    //Route::put('/Broker/myCarriers/{broker}', [\App\Http\Controllers\Broker\MyCarriersController::class, 'update'])->name('myCarriers.update');
+    Route::delete('/Broker/myCarriers/{player}/{broker}', [\App\Http\Controllers\Broker\MyCarriersController::class, 'remove'])->name('myCarriers.remove');
+    */
+});
